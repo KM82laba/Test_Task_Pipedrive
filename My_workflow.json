@@ -1,0 +1,466 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "baeac3f3-63ef-4b3c-acf8-5cfa5b748ba6",
+        "options": {}
+      },
+      "id": "babd7eae-0b55-490e-864d-c7bed5d4f28d",
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        -320,
+        300
+      ],
+      "webhookId": "baeac3f3-63ef-4b3c-acf8-5cfa5b748ba6"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C06MCLL4SHE",
+          "mode": "list",
+          "cachedResultName": "testing"
+        },
+        "messageType": "block",
+        "blocksUi": "{\n\t\"blocks\": [\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \"Hello, we have a new deal\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"divider\"\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \"Go to Deals\"\n\t\t\t},\n\t\t\t\"accessory\": {\n\t\t\t\t\"type\": \"button\",\n\t\t\t\t\"text\": {\n\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\"text\": \"Deals\",\n\t\t\t\t\t\"emoji\": true\n\t\t\t\t},\n\t\t\t\t\"value\": \"click_me_123\",\n\t\t\t\t\"url\": \"https://maxim-sandbox2.pipedrive.com/pipeline/1/user/everyone\",\n\t\t\t\t\"action_id\": \"button-action\"\n\t\t\t}\n\t\t}\n\t]\n}",
+        "text": "=We have {{ $json.title }}",
+        "otherOptions": {}
+      },
+      "id": "dae2fd01-92ac-486e-b9e5-05a6ee12e819",
+      "name": "Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        120
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "nZ1rbYnVBBkCBXu0",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "title": "=New Deal with Lead {{ $json.name }}",
+        "associateWith": "person",
+        "person_id": "={{ $json.id }}",
+        "additionalFields": {
+          "org_id": "={{ $json.org_id.value }}",
+          "stage_id": 2,
+          "user_id": "={{ $json.owner_id.id }}"
+        }
+      },
+      "id": "ac1cb118-d5cf-462f-b022-dbd8702e9171",
+      "name": "Pipedrive",
+      "type": "n8n-nodes-base.pipedrive",
+      "typeVersion": 1,
+      "position": [
+        540,
+        120
+      ],
+      "credentials": {
+        "pipedriveApi": {
+          "id": "LLst3zOjsKWwlKZF",
+          "name": "Pipedrive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "activity",
+        "subject": "=First meeting with {{ $json.name }}",
+        "type": "meeting",
+        "additionalFields": {
+          "deal_id": 0,
+          "due_date": "={{ $today }}",
+          "org_id": "={{ $json.company_id }}",
+          "person_id": "={{ $json.id }}"
+        }
+      },
+      "id": "ebe4a81d-14de-49c0-b34d-df6d8cd8b0e2",
+      "name": "Pipedrive1",
+      "type": "n8n-nodes-base.pipedrive",
+      "typeVersion": 1,
+      "position": [
+        920,
+        -80
+      ],
+      "credentials": {
+        "pipedriveApi": {
+          "id": "LLst3zOjsKWwlKZF",
+          "name": "Pipedrive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "person",
+        "operation": "get",
+        "personId": "={{ $json.body.meta.id }}"
+      },
+      "id": "213fc7bf-2ee9-4104-a4fa-32beed87d71f",
+      "name": "Pipedrive2",
+      "type": "n8n-nodes-base.pipedrive",
+      "typeVersion": 1,
+      "position": [
+        300,
+        120
+      ],
+      "credentials": {
+        "pipedriveApi": {
+          "id": "LLst3zOjsKWwlKZF",
+          "name": "Pipedrive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C06MCLL4SHE",
+          "mode": "list",
+          "cachedResultName": "testing"
+        },
+        "text": "=We have {{ $json.body.current.title }} with status: {{ $json.body.current.status }}",
+        "otherOptions": {}
+      },
+      "id": "19dd156c-c27d-4889-b345-169e31cefbd6",
+      "name": "Slack1",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        580,
+        300
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "nZ1rbYnVBBkCBXu0",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "9961a59f-7c1d-467d-8769-aacff72101a1",
+              "leftValue": "={{ $json.body.current.status }}",
+              "rightValue": "won",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "20c5c01e-fa2f-4944-b356-eea1808dba43",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        300,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "d40c972f-d51e-49e8-a4db-2ec97c6a8c77",
+      "name": "No Operation, do nothing1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        580,
+        640
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "bf4bb6ec-1817-477f-a2fe-a50a107ee4a6",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email[0].value }}",
+        "subject": "=Won deal ",
+        "emailType": "text",
+        "message": "=Hello , dear {{ $json.name }} u will be have a won status in deal.",
+        "options": {}
+      },
+      "id": "b4f56199-3b05-4328-aa3b-d8eb8a3612e8",
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        820,
+        460
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Yku0vf0QkdOM4bGC",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "person",
+        "operation": "get",
+        "personId": "={{ $json.body.current.person_id }}"
+      },
+      "id": "57bcbaf7-f749-40d9-a8e9-46e04562371d",
+      "name": "Pipedrive3",
+      "type": "n8n-nodes-base.pipedrive",
+      "typeVersion": 1,
+      "position": [
+        580,
+        460
+      ],
+      "credentials": {
+        "pipedriveApi": {
+          "id": "LLst3zOjsKWwlKZF",
+          "name": "Pipedrive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "44492207-28df-44ec-b70a-2c762fb99c4e",
+                    "leftValue": "={{ $json.body.meta.object }}",
+                    "rightValue": "deal",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.meta.object }}",
+                    "rightValue": "=person",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "b429beef-5b6c-4d6e-b278-c35763f6c807",
+                    "leftValue": "={{ $json.body.meta.object }}",
+                    "rightValue": "organization",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "ab01b91d-e4b0-483d-a74c-5e8243d79b11",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -20,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pipedrive": {
+      "main": [
+        [
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Pipedrive2": {
+      "main": [
+        [
+          {
+            "node": "Pipedrive",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Slack1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pipedrive3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Pipedrive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pipedrive3": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pipedrive2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pipedrive2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bbe09de1-52ac-456f-9727-6243714a362f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d36e9f6a5c9b9b3651e58173901816b33d4cdd4a0bd095b41c5e97a976e6729a"
+  },
+  "id": "kkej8xCkzkJ9pWym",
+  "tags": []
+}

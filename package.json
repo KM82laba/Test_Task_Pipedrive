@@ -1,0 +1,19 @@
+{
+  "name": "salesautomators_test_task_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KM82laba/Salesautomators_Test_Task_2.git"
+  },
+  "author": "Maxim Klochko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KM82laba/Salesautomators_Test_Task_2/issues"
+  },
+  "homepage": "https://github.com/KM82laba/Salesautomators_Test_Task_2#readme"
+}
